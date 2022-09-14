@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotORM", "NotORM\NotORM.csproj", "{8F3F732C-3FB7-43FF-9601-F275F014D6E2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotORM", "NotORM\NotORM.csproj", "{8F3F732C-3FB7-43FF-9601-F275F014D6E2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotORM_Tests", "NotORM_Tests\NotORM_Tests.csproj", "{14EA2D98-F6AE-495A-94CF-B392530DF89F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{8F3F732C-3FB7-43FF-9601-F275F014D6E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F3F732C-3FB7-43FF-9601-F275F014D6E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8F3F732C-3FB7-43FF-9601-F275F014D6E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14EA2D98-F6AE-495A-94CF-B392530DF89F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14EA2D98-F6AE-495A-94CF-B392530DF89F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14EA2D98-F6AE-495A-94CF-B392530DF89F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14EA2D98-F6AE-495A-94CF-B392530DF89F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
