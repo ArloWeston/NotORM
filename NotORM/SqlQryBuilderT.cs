@@ -13,13 +13,13 @@ namespace NotORM
         private string _sql;
         private List<SqlParameter> _sqlParams;
         private List<T>? _rtnList;
-        public string Errors { get; set; }
+        public string ClassMappingErrors { get; set; }
 
 
         public SqlQryBuilder(string connStr)
         {
             _connStr = connStr;
-            Errors = "";
+            ClassMappingErrors = "";
             _sqlParams = new List<SqlParameter>();
             _sql = "";
         }
@@ -128,156 +128,150 @@ namespace NotORM
             return this;
         }
 
-        public SqlQryBuilder<T> RunQuery()
+        public SqlQryBuilder<T> Build()
         {
             _rtnList = new List<T>();
-            try
+            //try
+            //{
+
+            string sConnection = _connStr;
+            using (SqlConnection conn = new SqlConnection(sConnection))
             {
-
-                string sConnection = _connStr;
-                using (SqlConnection conn = new SqlConnection(sConnection))
+                SqlCommand command = new SqlCommand(_sql, conn);
+                if (_sqlParams.Count > 0)
                 {
-                    SqlCommand command = new SqlCommand(_sql, conn);
-                    if (_sqlParams.Count > 0)
+                    foreach (SqlParameter p in _sqlParams)
                     {
-                        foreach (SqlParameter p in _sqlParams)
-                        {
-                            command.Parameters.Add(p);
-                        }
+                        command.Parameters.Add(p);
                     }
+                }
 
 
-                    conn.Open();
-                    SqlDataReader reader = command.ExecuteReader();
-                    while (reader.Read())
+                conn.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+
+                    T obj = new T();
+
+                    foreach (var prop in obj.GetType().GetProperties())
                     {
-
-                        T obj = new T();
-
-                        foreach (var prop in obj.GetType().GetProperties())
+                        try
                         {
-                            try
+                            if (reader[prop.Name] != DBNull.Value)
                             {
-                                if (reader[prop.Name] != DBNull.Value)
+                                PropertyInfo propertyInfo = obj.GetType().GetProperty(prop.Name);
+
+                                if (propertyInfo.PropertyType.Name == "Nullable`1")
                                 {
-                                    PropertyInfo propertyInfo = obj.GetType().GetProperty(prop.Name);
-
-                                    if (propertyInfo.PropertyType.Name == "Nullable`1")
-                                    {
-                                        // code take from: https://stackoverflow.com/questions/3531318/convert-changetype-fails-on-nullable-types
-                                        Type t = Nullable.GetUnderlyingType(propertyInfo.PropertyType);
-                                        object safeValue = (reader[prop.Name] == null) ? null : Convert.ChangeType(reader[prop.Name], t);
-                                        propertyInfo.SetValue(obj, safeValue, null);
-                                        //var temp = Convert.ChangeType(reader[prop.Name], propertyInfo.PropertyType);
-                                        //propertyInfo.SetValue(obj, temp, null);
-                                    }
-                                    else
-                                    {
-                                        propertyInfo.SetValue(obj, Convert.ChangeType(reader[prop.Name], propertyInfo.PropertyType), null);
-                                    }
-
+                                    // code take from: https://stackoverflow.com/questions/3531318/convert-changetype-fails-on-nullable-types
+                                    Type t = Nullable.GetUnderlyingType(propertyInfo.PropertyType);
+                                    object safeValue = (reader[prop.Name] == null) ? null : Convert.ChangeType(reader[prop.Name], t);
+                                    propertyInfo.SetValue(obj, safeValue, null);
+                                    //var temp = Convert.ChangeType(reader[prop.Name], propertyInfo.PropertyType);
+                                    //propertyInfo.SetValue(obj, temp, null);
+                                }
+                                else
+                                {
+                                    propertyInfo.SetValue(obj, Convert.ChangeType(reader[prop.Name], propertyInfo.PropertyType), null);
                                 }
 
                             }
-                            catch (Exception e)
-                            {
-                                Errors += " class mapping error: " + e.Message;
-                            }
+
                         }
-
-                        _rtnList.Add(obj);
-
+                        catch (Exception e)
+                        {
+                            ClassMappingErrors += "  " + prop.Name + " Error: " + e.Message;
+                        }
                     }
 
+                    _rtnList.Add(obj);
+
                 }
+
             }
-            catch (Exception e)
-            {
-                Errors += " " + e.Message;
-            }
+            //}
+            //catch (Exception e)
+            //{
+            //    Errors += " " + e.Message;
+            //}
             return this;
         }
 
 
 
 
-        public async Task<List<T>> RunQueryAsync()
+        public async Task<List<T>> BuildAsync()
         {
             _rtnList = new List<T>();
-            try
+
+            string sConnection = _connStr;
+            using (SqlConnection conn = new SqlConnection(sConnection))
             {
+                SqlCommand command = new SqlCommand(_sql, conn);
 
-                string sConnection = _connStr;
-                using (SqlConnection conn = new SqlConnection(sConnection))
+                if (_sqlParams.Count > 0)
                 {
-                    SqlCommand command = new SqlCommand(_sql, conn);
-
-                    if (_sqlParams.Count > 0)
+                    foreach (SqlParameter p in _sqlParams)
                     {
-                        foreach (SqlParameter p in _sqlParams)
-                        {
-                            command.Parameters.Add(p);
-                        }
+                        command.Parameters.Add(p);
                     }
+                }
 
-                    conn.Open();
-                    SqlDataReader reader = await command.ExecuteReaderAsync();
-                    while (reader.Read())
+                conn.Open();
+                SqlDataReader reader = await command.ExecuteReaderAsync();
+                while (reader.Read())
+                {
+                    T obj = new T();
+
+                    foreach (var prop in obj.GetType().GetProperties())
                     {
-                        T obj = new T();
-
-                        foreach (var prop in obj.GetType().GetProperties())
+                        try
                         {
-                            try
+                            if (reader[prop.Name] != DBNull.Value)
                             {
-                                if (reader[prop.Name] != DBNull.Value)
+                                PropertyInfo propertyInfo = obj.GetType().GetProperty(prop.Name);
+
+                                if (propertyInfo.PropertyType.Name == "Nullable`1")
                                 {
-                                    PropertyInfo propertyInfo = obj.GetType().GetProperty(prop.Name);
-
-                                    if (propertyInfo.PropertyType.Name == "Nullable`1")
-                                    {
-                                        // code take from: https://stackoverflow.com/questions/3531318/convert-changetype-fails-on-nullable-types
-                                        Type t = Nullable.GetUnderlyingType(propertyInfo.PropertyType);
-                                        object safeValue = (reader[prop.Name] == null) ? null : Convert.ChangeType(reader[prop.Name], t);
-                                        propertyInfo.SetValue(obj, safeValue, null);
-                                    }
-                                    else
-                                    {
-                                        propertyInfo.SetValue(obj, Convert.ChangeType(reader[prop.Name], propertyInfo.PropertyType), null);
-                                    }
-
+                                    // code take from: https://stackoverflow.com/questions/3531318/convert-changetype-fails-on-nullable-types
+                                    Type t = Nullable.GetUnderlyingType(propertyInfo.PropertyType);
+                                    object safeValue = (reader[prop.Name] == null) ? null : Convert.ChangeType(reader[prop.Name], t);
+                                    propertyInfo.SetValue(obj, safeValue, null);
+                                }
+                                else
+                                {
+                                    propertyInfo.SetValue(obj, Convert.ChangeType(reader[prop.Name], propertyInfo.PropertyType), null);
                                 }
 
                             }
-                            catch (Exception e)
-                            {
-                                Errors += " class mapping error: " + e.Message;
-                            }
-                        }
 
-                        _rtnList.Add(obj);
+                        }
+                        catch (Exception e)
+                        {
+                            ClassMappingErrors += "  " + prop.Name + " Error: " + e.Message;
+                        }
                     }
+
+                    _rtnList.Add(obj);
                 }
             }
-            catch (Exception e)
-            {
-                Errors += " " + e.Message;
-            }
+
             return _rtnList;
         }
 
 
 
-        public List<T> ReturnResult()
-        {
-            return _rtnList;
-        }
+        //public List<T> ReturnResult()
+        //{
+        //    return _rtnList;
+        //}
 
-        public SqlQryBuilder<T> GetErrors(out string errors)
-        {
-            errors = Errors;
-            return this;
-        }
+        //public SqlQryBuilder<T> GetErrors(out string errors)
+        //{
+        //    errors = Errors;
+        //    return this;
+        //}
 
 
     }

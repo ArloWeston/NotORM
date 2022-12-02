@@ -6,14 +6,14 @@ using System.Reflection;
 using System.Threading.Tasks;
 
 namespace NotORM
-{ 
+{
     public class SqlQryBuilder
     {
         private string _connStr;
         private string _sql;
         private List<SqlParameter> _sqlParams;
         private int _rtnVal;
-        public string Errors { get; set; }
+        //public string Errors { get; set; }
 
 
         public SqlQryBuilder(string connStr)
@@ -153,42 +153,42 @@ namespace NotORM
         }
 
 
-        public async Task<int> RunNonQueryAsync()
+        public async Task<int> BuildAsync()
         {
             _rtnVal = 0;
-            try
-            {
+            //try
+            //{
 
-                string sConnection = _connStr;
-                using (SqlConnection conn = new SqlConnection(sConnection))
+            string sConnection = _connStr;
+            using (SqlConnection conn = new SqlConnection(sConnection))
+            {
+                SqlCommand command = new SqlCommand(_sql, conn);
+
+                if (_sqlParams.Count > 0)
                 {
-                    SqlCommand command = new SqlCommand(_sql, conn);
-
-                    if (_sqlParams.Count > 0)
+                    foreach (SqlParameter p in _sqlParams)
                     {
-                        foreach (SqlParameter p in _sqlParams)
-                        {
-                            command.Parameters.Add(p);
-                        }
+                        command.Parameters.Add(p);
                     }
-
-                    conn.Open();
-                    _rtnVal = await command.ExecuteNonQueryAsync();
-
                 }
+
+                conn.Open();
+                _rtnVal = await command.ExecuteNonQueryAsync();
+
             }
-            catch (Exception e)
-            {
-                Errors += " " + e.Message;
-            }
+            //}
+            //catch (Exception e)
+            //{
+            //    Errors += " " + e.Message;
+            //}
             return _rtnVal;
         }
 
-        public async Task<List<string>> RunQueryAsync()
+        public async Task<List<string>> BuildListAsync()
         {
             List<string> rtnList = new List<string>();
-            try
-            {
+            //try
+            //{
 
                 string sConnection = _connStr;
                 using (SqlConnection conn = new SqlConnection(sConnection))
@@ -211,24 +211,24 @@ namespace NotORM
                         rtnList.Add(val);
                     }
                 }
-            }
-            catch (Exception e)
-            {
-                Errors += " " + e.Message;
-            }
+            //}
+            //catch (Exception e)
+            //{
+            //    Errors += " " + e.Message;
+            //}
             return rtnList;
         }
 
-        public int ReturnResult()
-        {
-            return _rtnVal;
-        }
+        //public int ReturnResult()
+        //{
+        //    return _rtnVal;
+        //}
 
-        public SqlQryBuilder GetErrors(out string errors)
-        {
-            errors = Errors;
-            return this;
-        }
+        //public SqlQryBuilder GetErrors(out string errors)
+        //{
+        //    errors = Errors;
+        //    return this;
+        //}
 
         //public SqlQryBuilder<T> LogErrors(Logger logger)
         //{
