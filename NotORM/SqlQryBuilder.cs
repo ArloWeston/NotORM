@@ -121,34 +121,34 @@ namespace NotORM
             return this;
         }
 
-        public SqlQryBuilder RunNonQuery()
+        public SqlQryBuilder BuildNonQuery()
         {
             _rtnVal = 0;
-            try
-            {
+            //try
+            //{
 
-                string sConnection = _connStr;
-                using (SqlConnection conn = new SqlConnection(sConnection))
+            string sConnection = _connStr;
+            using (SqlConnection conn = new SqlConnection(sConnection))
+            {
+                SqlCommand command = new SqlCommand(_sql, conn);
+
+                if (_sqlParams.Count > 0)
                 {
-                    SqlCommand command = new SqlCommand(_sql, conn);
-
-                    if (_sqlParams.Count > 0)
+                    foreach (SqlParameter p in _sqlParams)
                     {
-                        foreach (SqlParameter p in _sqlParams)
-                        {
-                            command.Parameters.Add(p);
-                        }
+                        command.Parameters.Add(p);
                     }
-
-                    conn.Open();
-                    _rtnVal = command.ExecuteNonQuery();
-
                 }
+
+                conn.Open();
+                _rtnVal = command.ExecuteNonQuery();
+
             }
-            catch (Exception e)
-            {
-                Errors += " " + e.Message;
-            }
+            //}
+            //catch (Exception e)
+            //{
+            //    Errors += " " + e.Message;
+            //}
             return this;
         }
 
@@ -190,27 +190,27 @@ namespace NotORM
             //try
             //{
 
-                string sConnection = _connStr;
-                using (SqlConnection conn = new SqlConnection(sConnection))
+            string sConnection = _connStr;
+            using (SqlConnection conn = new SqlConnection(sConnection))
+            {
+                SqlCommand command = new SqlCommand(_sql, conn);
+
+                if (_sqlParams.Count > 0)
                 {
-                    SqlCommand command = new SqlCommand(_sql, conn);
-
-                    if (_sqlParams.Count > 0)
+                    foreach (SqlParameter p in _sqlParams)
                     {
-                        foreach (SqlParameter p in _sqlParams)
-                        {
-                            command.Parameters.Add(p);
-                        }
-                    }
-
-                    conn.Open();
-                    SqlDataReader reader = await command.ExecuteReaderAsync();
-                    while (reader.Read())
-                    {
-                        string val = reader[0].ToString();
-                        rtnList.Add(val);
+                        command.Parameters.Add(p);
                     }
                 }
+
+                conn.Open();
+                SqlDataReader reader = await command.ExecuteReaderAsync();
+                while (reader.Read())
+                {
+                    string val = reader[0].ToString();
+                    rtnList.Add(val);
+                }
+            }
             //}
             //catch (Exception e)
             //{
