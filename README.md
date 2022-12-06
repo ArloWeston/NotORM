@@ -2,8 +2,8 @@
 
 Not really an ORM, just a simple mapping from a SQL Server query to a class.  Written in C#, uses the builder pattern.
 
-## Example:
-We have this class:
+## Example
+### Let's say we have this class:
     public class Customer
     {
         public string CustomerID { get; set; }
