@@ -11,7 +11,7 @@ Not really an ORM, just a simple mapping from a SQL Server query to a class.  Wr
         public string City { get; set; }
     }
 
-### Use like this:
+### I want to get data from the database and use it as a Customer class:
     SqlQryBuilder<Customer> sqlb = new SqlQryBuilder<Customer>(sqlConnection);
 
     List<Customer> CustomersInCity =
