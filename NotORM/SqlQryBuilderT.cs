@@ -128,7 +128,7 @@ namespace NotORM
             return this;
         }
 
-        public SqlQryBuilder<T> Build()
+        public List<T> Build()
         {
             _rtnList = new List<T>();
             //try
@@ -195,7 +195,7 @@ namespace NotORM
             //{
             //    Errors += " " + e.Message;
             //}
-            return this;
+            return _rtnList;
         }
 
 

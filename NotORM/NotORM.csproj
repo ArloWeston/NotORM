@@ -3,6 +3,14 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <Nullable>enable</Nullable>
+    <Title>Not ORM</Title>
+    <Version>1.0.11</Version>
+    <Authors>Arlo Weston</Authors>
+    <Company>Hannay Reels, Inc.</Company>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageId>NotORM</PackageId>
+    <Description>SQL Server to Class Mapper, write the SQL query, auto-map to a class</Description>
+    <PackageTags>SQL Server; C# Class Mapping;</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

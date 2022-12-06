@@ -153,7 +153,7 @@ namespace NotORM
         }
 
 
-        public async Task<int> BuildAsync()
+        public async Task<int> BuildNonQueryAsync()
         {
             _rtnVal = 0;
             //try
@@ -184,7 +184,7 @@ namespace NotORM
             return _rtnVal;
         }
 
-        public async Task<List<string>> BuildListAsync()
+        public async Task<List<string>> BuildListStringQueryAsync()
         {
             List<string> rtnList = new List<string>();
             //try
