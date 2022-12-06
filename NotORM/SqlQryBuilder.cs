@@ -13,13 +13,10 @@ namespace NotORM
         private string _sql;
         private List<SqlParameter> _sqlParams;
         private int _rtnVal;
-        //public string Errors { get; set; }
-
 
         public SqlQryBuilder(string connStr)
         {
             _connStr = connStr;
-            //Errors = "";
             _sqlParams = new List<SqlParameter>();
             _sql = "";
         }
@@ -124,8 +121,6 @@ namespace NotORM
         public SqlQryBuilder BuildNonQuery()
         {
             _rtnVal = 0;
-            //try
-            //{
 
             string sConnection = _connStr;
             using (SqlConnection conn = new SqlConnection(sConnection))
@@ -144,11 +139,7 @@ namespace NotORM
                 _rtnVal = command.ExecuteNonQuery();
 
             }
-            //}
-            //catch (Exception e)
-            //{
-            //    Errors += " " + e.Message;
-            //}
+
             return this;
         }
 
@@ -156,8 +147,6 @@ namespace NotORM
         public async Task<int> BuildNonQueryAsync()
         {
             _rtnVal = 0;
-            //try
-            //{
 
             string sConnection = _connStr;
             using (SqlConnection conn = new SqlConnection(sConnection))
@@ -176,19 +165,13 @@ namespace NotORM
                 _rtnVal = await command.ExecuteNonQueryAsync();
 
             }
-            //}
-            //catch (Exception e)
-            //{
-            //    Errors += " " + e.Message;
-            //}
+
             return _rtnVal;
         }
 
         public async Task<List<string>> BuildListStringQueryAsync()
         {
             List<string> rtnList = new List<string>();
-            //try
-            //{
 
             string sConnection = _connStr;
             using (SqlConnection conn = new SqlConnection(sConnection))
@@ -211,32 +194,10 @@ namespace NotORM
                     rtnList.Add(val);
                 }
             }
-            //}
-            //catch (Exception e)
-            //{
-            //    Errors += " " + e.Message;
-            //}
+
             return rtnList;
         }
 
-        //public int ReturnResult()
-        //{
-        //    return _rtnVal;
-        //}
-
-        //public SqlQryBuilder GetErrors(out string errors)
-        //{
-        //    errors = Errors;
-        //    return this;
-        //}
-
-        //public SqlQryBuilder<T> LogErrors(Logger logger)
-        //{
-        //    //log any errors here...
-        //}
     }
-
-
-
 
 }

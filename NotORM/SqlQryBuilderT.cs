@@ -131,8 +131,6 @@ namespace NotORM
         public List<T> Build()
         {
             _rtnList = new List<T>();
-            //try
-            //{
 
             string sConnection = _connStr;
             using (SqlConnection conn = new SqlConnection(sConnection))
@@ -190,11 +188,7 @@ namespace NotORM
                 }
 
             }
-            //}
-            //catch (Exception e)
-            //{
-            //    Errors += " " + e.Message;
-            //}
+
             return _rtnList;
         }
 
@@ -259,19 +253,6 @@ namespace NotORM
 
             return _rtnList;
         }
-
-
-
-        //public List<T> ReturnResult()
-        //{
-        //    return _rtnList;
-        //}
-
-        //public SqlQryBuilder<T> GetErrors(out string errors)
-        //{
-        //    errors = Errors;
-        //    return this;
-        //}
 
 
     }
