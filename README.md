@@ -21,7 +21,7 @@ Not really an ORM, just a simple mapping from a SQL Server query to a class.  Wr
             FROM CustomerMasterTable
             WHERE dbCity = @dbCity
             ")
-        .AddParameter("dbCity", "New York City")
+        .AddParameter("dbCity", "New York")
         .Build();
         return CustomersInCity;
 ### Now I have a list of the Customer class to be used how ever I want!
