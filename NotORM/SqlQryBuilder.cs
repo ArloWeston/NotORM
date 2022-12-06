@@ -19,7 +19,7 @@ namespace NotORM
         public SqlQryBuilder(string connStr)
         {
             _connStr = connStr;
-            Errors = "";
+            //Errors = "";
             _sqlParams = new List<SqlParameter>();
             _sql = "";
         }

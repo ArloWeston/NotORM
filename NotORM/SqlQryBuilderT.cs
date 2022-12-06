@@ -234,7 +234,7 @@ namespace NotORM
 
                                 if (propertyInfo.PropertyType.Name == "Nullable`1")
                                 {
-                                    // code take from: https://stackoverflow.com/questions/3531318/convert-changetype-fails-on-nullable-types
+                                    // code taken from: https://stackoverflow.com/questions/3531318/convert-changetype-fails-on-nullable-types
                                     Type t = Nullable.GetUnderlyingType(propertyInfo.PropertyType);
                                     object safeValue = (reader[prop.Name] == null) ? null : Convert.ChangeType(reader[prop.Name], t);
                                     propertyInfo.SetValue(obj, safeValue, null);
