@@ -4,14 +4,28 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <Nullable>enable</Nullable>
     <Title>Not ORM</Title>
-    <Version>1.0.11</Version>
+    <Version>1.0.12</Version>
     <Authors>Arlo Weston</Authors>
     <Company>Hannay Reels, Inc.</Company>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageId>NotORM</PackageId>
     <Description>SQL Server to Class Mapper, write the SQL query, auto-map to a class</Description>
     <PackageTags>SQL Server; C# Class Mapping;</PackageTags>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/ArloWeston/NotORM</RepositoryUrl>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.0.0" />
