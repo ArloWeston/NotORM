@@ -23,10 +23,23 @@ Not really an ORM, just a simple mapping from a SQL Server query to a class.  Wr
             ")
         .AddParameter("dbCity", "New York")
         .Build();
-        return CustomersInCity;
+        
 ### Now I have a list of the Customer class to be used how ever I want!
 
+### You can do Insert and Update queries too:
+    SqlQryBuilder sqlb = new SqlQryBuilder(sqlConnection);
 
+    int success = 
+        sqlb
+        .AddSQLString(@"
+            UPDATE CustomerMasterTable
+            SET boolTblVal = @boolTblVal
+            WHERE CustomerID = @CustomerID")
+        .AddParameter("boolTblVal", true) 
+        .AddParameter("CustomerID", 12345678)
+        .BuildNonQuery();
+
+### It has async methods too, like BuildAsync and BuildNonQueryAsync
 
 
 

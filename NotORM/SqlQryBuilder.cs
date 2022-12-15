@@ -112,13 +112,31 @@ namespace NotORM
             return this;
         }
 
+        public SqlQryBuilder AddParameter(string column, bool? value)
+        {
+            SqlParameter bitParam = new SqlParameter(column, System.Data.SqlDbType.Bit);
+            if (!value.HasValue)
+            {
+                bitParam.Value = DBNull.Value;
+            }
+            else
+            {
+                bitParam.Value = value;
+            }
+            
+            _sqlParams.Add(bitParam);
+            return this;
+        }
+
+
+
         public SqlQryBuilder ClearParameterList()
         {
             _sqlParams = new List<SqlParameter>();
             return this;
         }
 
-        public SqlQryBuilder BuildNonQuery()
+        public int BuildNonQuery()
         {
             _rtnVal = 0;
 
@@ -140,7 +158,7 @@ namespace NotORM
 
             }
 
-            return this;
+            return _rtnVal;
         }
 
 
