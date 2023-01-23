@@ -10,20 +10,22 @@ namespace NotORM
     public class SqlQryBuilder
     {
         private string _connStr;
-        private string _sql;
+        //private string _sql;
         private List<SqlParameter> _sqlParams;
         private int _rtnVal;
+
+        public string SQL { get; set; }
 
         public SqlQryBuilder(string connStr)
         {
             _connStr = connStr;
             _sqlParams = new List<SqlParameter>();
-            _sql = "";
+            SQL = "";
         }
 
         public SqlQryBuilder AddSQLString(string sql)
         {
-            _sql = sql;
+            SQL = sql;
             return this;
         }
 
@@ -143,7 +145,7 @@ namespace NotORM
             string sConnection = _connStr;
             using (SqlConnection conn = new SqlConnection(sConnection))
             {
-                SqlCommand command = new SqlCommand(_sql, conn);
+                SqlCommand command = new SqlCommand(SQL, conn);
 
                 if (_sqlParams.Count > 0)
                 {
@@ -169,7 +171,7 @@ namespace NotORM
             string sConnection = _connStr;
             using (SqlConnection conn = new SqlConnection(sConnection))
             {
-                SqlCommand command = new SqlCommand(_sql, conn);
+                SqlCommand command = new SqlCommand(SQL, conn);
 
                 if (_sqlParams.Count > 0)
                 {
@@ -194,7 +196,7 @@ namespace NotORM
             string sConnection = _connStr;
             using (SqlConnection conn = new SqlConnection(sConnection))
             {
-                SqlCommand command = new SqlCommand(_sql, conn);
+                SqlCommand command = new SqlCommand(SQL, conn);
 
                 if (_sqlParams.Count > 0)
                 {
