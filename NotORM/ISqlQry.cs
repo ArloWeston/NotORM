@@ -12,5 +12,14 @@ namespace NotORM
         public string ClassMappingErrors { get; set; }
         public string WhereCl { get; set; }
         public string OrderByCl { get; set; }
+
+        public void AddParameter(string column, string value);
+        public void AddParameter(string column, DateTime value);
+        public void AddParameter(string column, int value);
+        public void AddParameter(string column, int? value);
+        public void AddParameter(string column, decimal? value);
+        public void AddParameter(string column, DateTime? value);
+        public void AddParameter(string column, bool? value);
+        public void ClearParameterList();
     }
 }
