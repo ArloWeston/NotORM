@@ -20,6 +20,15 @@ namespace NotORM
             }
         }
 
+        public string ClassMappingErrors
+        {
+            get => _sqlQry.ClassMappingErrors;
+            set
+            {
+                _sqlQry.ClassMappingErrors = value;
+            }
+        }
+
         /// <summary>
         /// Optional place to put the where clause if need to get it seperate from SQL
         /// </summary>
