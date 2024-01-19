@@ -9,213 +9,131 @@ namespace NotORM
 {
     public class SqlQryBuilder
     {
-        private string _connStr;
-        //private string _sql;
-        private List<SqlParameter> _sqlParams;
-        private int _rtnVal;
+        private SqlQry _sqlQry;
+        //private List<SqlParameter> _sqlParams;
+        //private int _rtnVal;
 
-        public string SQL { get; set; }
+        public string SQL 
+        { 
+            get => _sqlQry.SQL;
+            set 
+            {
+                _sqlQry.SQL = value;   
+            } 
+        }
+
+        /// <summary>
+        /// Optional place to put the where clause if need to get it seperate from SQL
+        /// </summary>
+        public string WhereCl
+        {
+            get => _sqlQry.WhereCl;
+            set
+            {
+                _sqlQry.WhereCl = value;
+            }
+        }
+
+        /// <summary>
+        /// Optional place to put the order by clause if need to get it seperate from SQL
+        /// </summary>
+        public string OrderByCl
+        {
+            get => _sqlQry.OrderByCl;
+            set
+            {
+                _sqlQry.OrderByCl = value;
+            }
+        }
 
         public SqlQryBuilder(string connStr)
         {
-            _connStr = connStr;
-            _sqlParams = new List<SqlParameter>();
-            SQL = "";
+            _sqlQry = new SqlQry(connStr);
+            
         }
 
         public SqlQryBuilder AddSQLString(string sql)
         {
-            SQL = sql;
+            _sqlQry.SQL = sql;
             return this;
         }
 
         public SqlQryBuilder AddParameter(string column, string value)
         {
-            SqlParameter sParam;
-            if (value == null)
-            {
-                sParam = new SqlParameter(column, DBNull.Value);
-            }
-            else
-            {
-                sParam = new SqlParameter(column, value);
-            }
-
-            _sqlParams.Add(sParam);
+            _sqlQry.AddParameter(column, value);
             return this;
         }
 
 
         public SqlQryBuilder AddParameter(string column, DateTime value)
         {
-            SqlParameter dateParam = new SqlParameter(column, System.Data.SqlDbType.DateTime);
-            if (value == DateTime.MinValue)
-            {
-                dateParam.Value = DBNull.Value;
-            }
-            else
-            {
-                dateParam.Value = value;
-            }
-            _sqlParams.Add(dateParam);
+            _sqlQry.AddParameter(column, value);
             return this;
         }
 
         public SqlQryBuilder AddParameter(string column, int value)
         {
-            SqlParameter dateParam = new SqlParameter(column, System.Data.SqlDbType.Int);
-            dateParam.Value = value;
-            _sqlParams.Add(dateParam);
+            _sqlQry.AddParameter(column, value);
             return this;
         }
 
         public SqlQryBuilder AddParameter(string column, int? value)
         {
-            SqlParameter dateParam = new SqlParameter(column, System.Data.SqlDbType.Int);
-            if (!value.HasValue)
-            {
-                dateParam.Value = DBNull.Value;
-            }
-            else
-            {
-                dateParam.Value = value.Value;
-            }
-            _sqlParams.Add(dateParam);
+            _sqlQry.AddParameter(column, value);
             return this;
         }
 
         public SqlQryBuilder AddParameter(string column, decimal? value)
         {
-            SqlParameter dateParam = new SqlParameter(column, System.Data.SqlDbType.Decimal);
-            if (!value.HasValue)
-            {
-                dateParam.Value = DBNull.Value;
-            }
-            else
-            {
-                dateParam.Value = value.Value;
-            }
-            _sqlParams.Add(dateParam);
+            _sqlQry.AddParameter(column, value);
             return this;
         }
 
         public SqlQryBuilder AddParameter(string column, DateTime? value)
         {
-            SqlParameter dateParam = new SqlParameter(column, System.Data.SqlDbType.DateTime);
-            if (!value.HasValue)
-            {
-                dateParam.Value = DBNull.Value;
-            }
-            else
-            {
-                dateParam.Value = value.Value;
-            }
-            _sqlParams.Add(dateParam);
+            _sqlQry.AddParameter(column, value);
             return this;
         }
 
         public SqlQryBuilder AddParameter(string column, bool? value)
         {
-            SqlParameter bitParam = new SqlParameter(column, System.Data.SqlDbType.Bit);
-            if (!value.HasValue)
-            {
-                bitParam.Value = DBNull.Value;
-            }
-            else
-            {
-                bitParam.Value = value;
-            }
-            
-            _sqlParams.Add(bitParam);
+            _sqlQry.AddParameter(column, value);
+            return this;
+        }
+
+        public SqlQryBuilder AddWhereCls(string whereCls)
+        {
+            this.WhereCl = whereCls;
+            return this;
+        }
+
+        public SqlQryBuilder AddOrderBy(string orderByCls)
+        {
+            this.OrderByCl = orderByCls;
             return this;
         }
 
 
-
         public SqlQryBuilder ClearParameterList()
         {
-            _sqlParams = new List<SqlParameter>();
+            _sqlQry.ClearParameterList();
             return this;
         }
 
         public int BuildNonQuery()
         {
-            _rtnVal = 0;
-
-            string sConnection = _connStr;
-            using (SqlConnection conn = new SqlConnection(sConnection))
-            {
-                SqlCommand command = new SqlCommand(SQL, conn);
-
-                if (_sqlParams.Count > 0)
-                {
-                    foreach (SqlParameter p in _sqlParams)
-                    {
-                        command.Parameters.Add(p);
-                    }
-                }
-
-                conn.Open();
-                _rtnVal = command.ExecuteNonQuery();
-
-            }
-
-            return _rtnVal;
+            return _sqlQry.NonQuery();
         }
 
 
         public async Task<int> BuildNonQueryAsync()
         {
-            _rtnVal = 0;
-
-            string sConnection = _connStr;
-            using (SqlConnection conn = new SqlConnection(sConnection))
-            {
-                SqlCommand command = new SqlCommand(SQL, conn);
-
-                if (_sqlParams.Count > 0)
-                {
-                    foreach (SqlParameter p in _sqlParams)
-                    {
-                        command.Parameters.Add(p);
-                    }
-                }
-
-                conn.Open();
-                _rtnVal = await command.ExecuteNonQueryAsync();
-
-            }
-
-            return _rtnVal;
+            return await _sqlQry.NonQueryAsync();
         }
 
         public async Task<List<string>> BuildListStringQueryAsync()
         {
-            List<string> rtnList = new List<string>();
-
-            string sConnection = _connStr;
-            using (SqlConnection conn = new SqlConnection(sConnection))
-            {
-                SqlCommand command = new SqlCommand(SQL, conn);
-
-                if (_sqlParams.Count > 0)
-                {
-                    foreach (SqlParameter p in _sqlParams)
-                    {
-                        command.Parameters.Add(p);
-                    }
-                }
-
-                conn.Open();
-                SqlDataReader reader = await command.ExecuteReaderAsync();
-                while (reader.Read())
-                {
-                    string val = reader[0].ToString();
-                    rtnList.Add(val);
-                }
-            }
-
-            return rtnList;
+            return await _sqlQry.ListStringQueryAsync();
         }
 
     }
