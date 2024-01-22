@@ -92,7 +92,14 @@ namespace NotORM
         public async Task<List<T>> GetDataAsync()
         {
             _rtnList = new List<T>();
-
+            if (WhereCl.Trim().Length > 0)
+            {
+                SQL += " " + WhereCl;
+            }
+            if (OrderByCl.Trim().Length > 0)
+            {
+                SQL += " " + OrderByCl;
+            }
             string sConnection = this.ConnStr;
             using (SqlConnection conn = new SqlConnection(sConnection))
             {
