@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     
     <Title>Not ORM</Title>
-    <Version>1.0.204</Version>
+    <Version>1.0.205</Version>
     <Authors>Arlo Weston</Authors>
     <Company>Hannay Reels, Inc.</Company>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
