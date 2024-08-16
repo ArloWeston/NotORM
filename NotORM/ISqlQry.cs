@@ -7,19 +7,19 @@ namespace NotORM
 {
     public interface ISqlQry
     {
-        public string SQL { get; set; }
-        public List<SqlParameter> SqlParams { get; set; }
-        public string ClassMappingErrors { get; set; }
-        public string WhereCl { get; set; }
-        public string OrderByCl { get; set; }
+        string SQL { get; set; }
+        List<SqlParameter> SqlParams { get; set; }
+        string ClassMappingErrors { get; set; }
+        string WhereCl { get; set; }
+        string OrderByCl { get; set; }
 
-        public void AddParameter(string column, string value);
-        public void AddParameter(string column, DateTime value);
-        public void AddParameter(string column, int value);
-        public void AddParameter(string column, int? value);
-        public void AddParameter(string column, decimal? value);
-        public void AddParameter(string column, DateTime? value);
-        public void AddParameter(string column, bool? value);
-        public void ClearParameterList();
+        void AddParameter(string column, string value);
+        void AddParameter(string column, DateTime value);
+        void AddParameter(string column, int value);
+        void AddParameter(string column, int? value);
+        void AddParameter(string column, decimal? value);
+        void AddParameter(string column, DateTime? value);
+        void AddParameter(string column, bool? value);
+        void ClearParameterList();
     }
 }

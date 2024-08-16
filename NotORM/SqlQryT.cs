@@ -9,7 +9,7 @@ namespace NotORM
 {
     public class SqlQry<T> : SqlQry where T : class, new()
     {
-        private List<T>? _rtnList;
+        private List<T> _rtnList;
 
         public SqlQry(string connStr) :base(connStr)
         {
