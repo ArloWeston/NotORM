@@ -131,6 +131,22 @@ namespace NotORM
         }
 
 
+        public void AddParameter(string column, byte[] value)
+        {
+            SqlParameter bitParam = new SqlParameter(column, System.Data.SqlDbType.VarBinary);
+            if (value == null)
+            {
+                bitParam.Value = DBNull.Value;
+            }
+            else
+            {
+                bitParam.Value = value;
+            }
+            SqlParams.Add(bitParam);
+
+        }
+
+
         public void ClearParameterList()
         {
             SqlParams = new List<SqlParameter>();

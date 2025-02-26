@@ -104,6 +104,12 @@ namespace NotORM
             return this;
         }
 
+        public SqlQryBuilder AddParametert(string column, byte[] value)
+        {
+            _sqlQry.AddParameter(column, value);
+            return this;
+        }
+
         public SqlQryBuilder AddParameter(string column, bool? value)
         {
             _sqlQry.AddParameter(column, value);

@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     
     <Title>Not ORM</Title>
-    <Version>1.0.206</Version>
+    <Version>1.0.207</Version>
     <Authors>Arlo Weston</Authors>
     <Company>Hannay Reels, Inc.</Company>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
@@ -28,7 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 

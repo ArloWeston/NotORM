@@ -112,6 +112,12 @@ namespace NotORM
             return this;
         }
 
+        public SqlQryBuilder<T> AddParameter(string column, byte[] value)
+        {
+            _sqlQry.AddParameter(column, value);
+            return this;
+        }
+
         public SqlQryBuilder<T> AddWhereCls(string whereCls)
         {
             this.WhereCl = whereCls;
